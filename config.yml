@@ -4,6 +4,13 @@
   gather_facts: no
   connection: network_cli
 
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "Enter Authorized Username"
+      private: no   # So they can see what they type
+    - name: "ansible_password"
+      prompt: "Enter Authorized Password"
+      private: yes  # Hides the password (standard)
   tasks:
     - name: Get Commands from Cisco AP
       cisco.ios.ios_command:
