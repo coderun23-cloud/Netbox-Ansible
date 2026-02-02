@@ -1,0 +1,39 @@
+---
+- name: Get Hostname and other commands
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+    - name: Get Commands from Cisco AP
+      cisco.ios.ios_command:
+        commands:
+          - show running-config | include hostname
+          - show running-config | include snmp
+          - show ip interface brief
+          - show ip ssh
+          - show running-config | include username
+      register: commands_output
+
+    - name: Display Device Information
+      debug:
+        msg:
+          - "========================================================="
+          - "                ACCESS POINT CONFIGURATIONS                     "
+          - "========================================================="
+          - "1. HOSTNAME:"
+          - "{{ commands_output.stdout[0] }}"
+          - " "
+          - "2. SNMP STATUS AND CONFIGURATION:"
+          - "{{ commands_output.stdout[1] }}"
+          - " "
+          - "3. IP INTERFACE BRIEF:"
+          - "{{ commands_output.stdout[2] }}"
+          - " "
+          - "4. SSH STATUS:"
+          - "{{ commands_output.stdout[3] }}"
+          - " "
+          - "5. CONFIGURED USERNAMES:"
+          - "{{ commands_output.stdout[4] }}"
+          - "========================================================="
+

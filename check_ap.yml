@@ -1,0 +1,28 @@
+# check_ap.yml
+---
+- name: Audit AP Status
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+    - name: Fetch IOS Facts
+      cisco.ios.ios_facts:
+        gather_subset:
+          - default
+          - interfaces
+      register: ap_facts
+
+    - name: Check SNMP Configuration
+      cisco.ios.ios_command:
+        commands:
+          - show run | include snmp-server community
+      register: snmp_check
+
+    - name: Display Device Details
+      debug:
+        msg:
+          - "Hostname: {{ ap_facts.ansible_facts.ansible_net_hostname }}"
+          - "IP Address: {{ ansible_host }}"
+          - "SSH Status: Enabled (Connection Successful)"
+          - "SNMP Status: {{ 'Enabled' if 'community' in snmp_check.stdout[0] else 'Disabled/Not Found' }}"

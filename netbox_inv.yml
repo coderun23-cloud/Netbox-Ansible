@@ -1,0 +1,9 @@
+# netbox_inv.yml
+plugin: netbox.netbox.nb_inventory
+api_endpoint: http://127.0.0.1:8000
+token: 1aba96fb7a0836e485546f27d4cc641c85fd14b2
+validate_certs: false
+config_context: false
+#group_by:
+ # - device_roles
+
