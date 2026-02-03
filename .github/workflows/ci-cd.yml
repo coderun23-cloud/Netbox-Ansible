@@ -16,4 +16,4 @@ jobs:
           python-version: '3.12.3'
       - run: pip install ansible ansible-lint
       - run: ansible-lint *.yml
-      - run: ansible-playbook --syntax-check playbook.yml -i netbox_inv.yml
+      - run: ansible-playbook config.yml -e "ansible_network_os=cisco.ios.ios"
