@@ -26,4 +26,6 @@ jobs:
       - name: Run Ansible syntax check
         run: |
           ansible-playbook config.yml --syntax-check \
-          -e "ansible_network_os=cisco.ios.ios"
+          -e "ansible_network_os=cisco.ios.ios" |
+          ansible-playbook playbook.yml --syntax-check \ -e "ansible_network_os=cisco.ios.ios" |
+          ansible-playbook check_ap.yml --syntax-check \ -e "ansible_network_os=cisco.ios.ios"
