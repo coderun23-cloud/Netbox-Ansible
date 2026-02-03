@@ -1,0 +1,63 @@
+---
+- name: Interactive Hostname Configuration
+  hosts: all
+  gather_facts: no
+  connection: network_cli
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "Enter Authorized Username"
+      private: no   # So they can see what they type
+    - name: "ansible_password"
+      prompt: "Enter Authorized Password"
+      private: yes  # Hides the password (standard)
+  tasks:
+    # Task 1: Show current hostname
+    - name: Get current hostname
+      ios_command:
+        commands:
+          - show running-config | include hostname
+      register: current_hostname
+
+    # Task 2: Display current hostname
+    - name: Display current device hostname
+      debug:
+        msg: "Current hostname: {{ current_hostname.stdout[0] | default('Not set') }}"
+
+    # Task 3: Prompt for new hostname
+    - name: Prompt for new hostname
+      pause:
+        prompt: |
+          ========================================
+          Current hostname: {{ current_hostname.stdout[0] | default('Not set') }}
+
+          Enter NEW hostname (or press Enter to keep current):
+          ========================================
+      register: user_input
+
+    # Task 4: Set new hostname if provided
+    - name: Configure new hostname
+      when: user_input.user_input | length > 0
+      ios_config:
+        lines:
+          - hostname {{ user_input.user_input }}
+      register: config_change
+
+    # Task 5: Verify new hostname was set
+    - name: Verify new hostname
+      when: user_input.user_input | length > 0
+      ios_command:
+        commands:
+          - show running-config | include hostname
+      register: new_hostname
+
+    # Task 6: Display result
+    - name: Show configuration result
+      debug:
+        msg: |
+          ========================================
+          Hostname change result:
+          Previous: {{ current_hostname.stdout[0] | default('Not set') }}
+          New: {{ new_hostname.stdout[0] | default('No change made') }}
+          Status: {{ 'Changed successfully' if user_input.user_input | length > 0 else 'No change - kept original' }}
+          ========================================
+
