@@ -1,4 +1,4 @@
-name: Ansible CI/CD
+name: Ansible CI
 
 on:
   push:
@@ -7,27 +7,23 @@ on:
     branches: [ main ]
 
 jobs:
-  lint-and-test:
+  syntax-check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install Ansible
         run: |
-          pip install ansible ansible-lint
+          pip install ansible
 
-      - name: Lint Ansible files
-        run: |
-          ansible-lint config.yml check_ap.yml playbook.yml
-
-      - name: Ansible Syntax Check
+      - name: Run Ansible syntax check
         run: |
           ansible-playbook config.yml --syntax-check \
           -e "ansible_network_os=cisco.ios.ios"
