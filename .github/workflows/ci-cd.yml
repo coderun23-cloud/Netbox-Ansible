@@ -17,15 +17,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install Ansible
         run: |
           pip install ansible
 
-      - name: Run Ansible syntax check
+      - name: Run Ansible syntax checks
         run: |
-          ansible-playbook config.yml --syntax-check \
-          -e "ansible_network_os=cisco.ios.ios" |
-          ansible-playbook playbook.yml --syntax-check \ -e "ansible_network_os=cisco.ios.ios" |
-          ansible-playbook check_ap.yml --syntax-check \ -e "ansible_network_os=cisco.ios.ios"
+          ansible-playbook config.yml --syntax-check -e "ansible_network_os=cisco.ios.ios"
+          ansible-playbook playbook.yml --syntax-check -e "ansible_network_os=cisco.ios.ios"
+          ansible-playbook check_ap.yml --syntax-check -e "ansible_network_os=cisco.ios.ios"
+
