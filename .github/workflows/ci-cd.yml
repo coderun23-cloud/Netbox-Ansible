@@ -7,13 +7,24 @@ on:
     branches: [ main ]
 
 jobs:
-  lint-and-syntax:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.12.3'
-      - run: pip install ansible ansible-lint
-      - run: ansible-lint *.yml
-      - run: ansible-playbook config.yml -e "ansible_network_os=cisco.ios.ios"
+
+      - name: Install dependencies
+        run: |
+          pip install ansible ansible-lint
+
+      - name: Lint Ansible Playbook
+        # This will check for those blank lines and truthy errors
+        run: ansible-lint *.yml 
+
+      - name: Run Syntax Check
+        # Validates logic without actually connecting to your devices
+        run: ansible-playbook config.yml --syntax-check -e "ansible_network_os=cisco.ios.ios"
