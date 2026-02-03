@@ -19,6 +19,7 @@
           - show running-config | include snmp
           - show ip interface brief
           - show ip ssh
+          - show running-config | include aaa new-model
           - show running-config | include username
       register: commands_output
 
@@ -40,7 +41,10 @@
           - "4. SSH STATUS:"
           - "{{ commands_output.stdout[3] }}"
           - " "
+          - "5. AAA STATUS:"
+          - "{{commands_output[4]}}"
+          - " "
           - "5. CONFIGURED USERNAMES:"
-          - "{{ commands_output.stdout[4] }}"
+          - "{{ commands_output.stdout[5] }}"
           - "========================================================="
 
