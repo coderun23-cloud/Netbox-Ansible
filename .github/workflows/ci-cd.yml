@@ -1,0 +1,19 @@
+name: Ansible CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.3'
+      - run: pip install ansible ansible-lint
+      - run: ansible-lint *.yml
+      - run: ansible-playbook --syntax-check playbook.yml -i netbox_inv.yml
