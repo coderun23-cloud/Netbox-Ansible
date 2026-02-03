@@ -1,6 +1,6 @@
 ---
 - name: Interactive Hostname Configuration and Automation
-hosts: all
+  hosts: all
   gather_facts: no
   connection: network_cli
   vars_prompt:

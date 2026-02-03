@@ -1,6 +1,6 @@
 ---
 - name: Get Hostname and other commands
-  hosts: all
+hosts: all
   gather_facts: no
   connection: network_cli
 
