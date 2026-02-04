@@ -1,6 +1,6 @@
 # check_ap.yml
 ---
-- name: Audit AP Status
+- name: Check the Access Point Status
   hosts: all
   gather_facts: no
   connection: network_cli
