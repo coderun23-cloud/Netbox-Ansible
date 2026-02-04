@@ -20,6 +20,7 @@
           - show ip interface brief
           - show ip ssh
           - show running-config | include aaa new-model
+          - show version
 
       register: commands_output
 
@@ -43,6 +44,9 @@
           - " "
           - "5. AAA STATUS:"
           - "{{commands_output[4]}}"
+          - " "
+          - "6. Version of the Device"
+          - "{{command_output[5]}}"
           - " "
           - "========================================================="
 
