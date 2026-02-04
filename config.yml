@@ -1,5 +1,5 @@
 ---
-- name: Get Hostname and other commands
+- name: Get The detail configurational data of the device
   hosts: all
   gather_facts: no
   connection: network_cli
